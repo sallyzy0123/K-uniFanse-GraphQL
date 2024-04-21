@@ -3,7 +3,7 @@ import {User, UserOutput} from '../../types/DBTypes';
 import {MessageResponse} from '../../types/MessageTypes';
 import {MyContext} from '../../types/MyContext';
 import fetchData from '../../lib/fetchData';
-import {LoginResponse, UserResponse} from '../../types/MessageTypes';
+import {UserResponse} from '../../types/MessageTypes';
 
 export default {
   Query: {
@@ -113,8 +113,8 @@ export default {
       );
       userResponse.user.id = userResponse.user._id;
       return userResponse;
-  },
-  deleteUser: async (
+    },
+    deleteUser: async (
       _parent: undefined,
       _args: undefined,
       context: MyContext,
@@ -139,7 +139,7 @@ export default {
       );
       userResponse.user.id = userResponse.user._id;
       return userResponse;
-  },
+    },
 //   updateUserAsAdmin: async (
 //       _parent: undefined,
 //       args: {user: UserInput, id: string},
