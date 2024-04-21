@@ -42,7 +42,7 @@ type Mutation {
   register(user: UserInput!): UserResponse
   login(credentials: Credentials!): LoginResponse
   updateUser(user: UserModifyInput!): UserResponse
-  deleteUser(id: ID!): UserResponse
+  deleteUser: UserResponse
   updateUserAsAdmin(user: UserModifyInput!, id: ID!): UserResponse
   deleteUserAsAdmin(id: ID!): UserResponse
 }

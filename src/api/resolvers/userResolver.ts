@@ -3,6 +3,7 @@ import {User, UserOutput} from '../../types/DBTypes';
 import {MessageResponse} from '../../types/MessageTypes';
 import {MyContext} from '../../types/MyContext';
 import fetchData from '../../lib/fetchData';
+import {LoginResponse, UserResponse} from '../../types/MessageTypes';
 
 export default {
   Query: {
@@ -90,8 +91,7 @@ export default {
       _parent: undefined,
       args: {user: Omit<User, 'role'>},
       context: MyContext,
-  ): Promise<{user: UserOutput} | {message: string}> => {
-    // update user itself
+  ): Promise<UserResponse> => {
       if (!context.userdata) {
           throw new GraphQLError('User not authenticated', {
             extensions: {
@@ -107,32 +107,39 @@ export default {
         },
         body: JSON.stringify(args.user),
       };
-      console.log('here', args.user, context);
-      const userResponse = await fetchData<MessageResponse & {user: User}>(
+      const userResponse = await fetchData<UserResponse>(
         process.env.AUTH_URL + '/users/',
         options
       );
       userResponse.user.id = userResponse.user._id;
       return userResponse;
   },
-//   deleteUser: async (
-//       _parent: undefined,
-//       _args: undefined,
-//       context: MyContext,
-//   ): Promise<UserResponse | {message: string}> => {
-//       if (!context.userdata) {
-//           throw new GraphQLError('User not authenticated', {
-//             extensions: {
-//               code: 'UNAUTHENTICATED',
-//             },
-//           });
-//       }
-//       const user = await userModel.findByIdAndDelete(context.userdata.user._id);
-//       if (!user) {
-//           return {message: 'User not deleted'};
-//       }
-//       return {message: 'User deleted', user};
-//   },
+  deleteUser: async (
+      _parent: undefined,
+      _args: undefined,
+      context: MyContext,
+  ): Promise<UserResponse> => {
+      if (!context.userdata) {
+          throw new GraphQLError('User not authenticated', {
+            extensions: {
+              code: 'UNAUTHENTICATED',
+            },
+          });
+      }
+      const options = {
+        method: 'DELETE',
+        headers: {
+          Authorization: 'Bearer ' + context.userdata.token,
+        },
+      };
+      console.log('here')
+      const userResponse = await fetchData<UserResponse>(
+        process.env.AUTH_URL + '/users',
+        options,
+      );
+      userResponse.user.id = userResponse.user._id;
+      return userResponse;
+  },
 //   updateUserAsAdmin: async (
 //       _parent: undefined,
 //       args: {user: UserInput, id: string},
