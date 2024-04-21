@@ -2,7 +2,7 @@ require('dotenv').config();
 import express, {Request, Response} from 'express';
 import helmet from 'helmet';
 import cors from 'cors';
-import {notFound, errorHandler, authenticate} from './middlewares';
+import {notFound, errorHandler} from './middlewares';
 import {MessageResponse} from './types/MessageTypes';
 import {ApolloServer} from '@apollo/server';
 import {expressMiddleware} from '@apollo/server/express4';
@@ -17,6 +17,7 @@ import {
 import { createRateLimitRule } from 'graphql-rate-limit';
 import {applyMiddleware} from 'graphql-middleware';
 import {shield} from 'graphql-shield';
+import authenticate from './lib/authenticate';
 
 const app = express();
 
@@ -67,9 +68,8 @@ const app = express();
       '/graphql',
       cors(),
       express.json(),
-      authenticate,
       expressMiddleware(server, {
-        context: ({res}) => res.locals.user,
+        context: async ({req}) => authenticate(req),
       }),
     );
 

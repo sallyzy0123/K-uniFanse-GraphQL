@@ -41,6 +41,8 @@ input Credentials {
 type Mutation {
   register(user: UserInput!): UserResponse
   login(credentials: Credentials!): LoginResponse
+  updateUser(user: UserModifyInput!): UserResponse
   deleteUser(id: ID!): UserResponse
-  modifyUser(user: UserModifyInput!, id: ID!): UserResponse
+  updateUserAsAdmin(user: UserModifyInput!, id: ID!): UserResponse
+  deleteUserAsAdmin(id: ID!): UserResponse
 }

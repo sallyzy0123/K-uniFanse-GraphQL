@@ -1,7 +1,7 @@
-import {UserWithoutPassword} from './DBTypes';
+import {TokenContent} from './DBTypes';
 
 type MyContext = {
-  userdata?: UserWithoutPassword;
+  userdata?: TokenContent;
 };
 
 export {MyContext};
