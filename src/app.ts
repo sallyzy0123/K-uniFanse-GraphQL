@@ -39,7 +39,7 @@ const app = express();
     const permissions = shield({
       Mutation: {
         login: rateLimitRule({window: '10s', max: 5}),
-        addAnimal: rateLimitRule({window: '10s', max: 1}),
+        // addAnimal: rateLimitRule({window: '10s', max: 1}),
       }
     })
 
