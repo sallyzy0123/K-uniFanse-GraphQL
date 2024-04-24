@@ -1,0 +1,61 @@
+type Merchandise {
+  id: ID!
+  merchandise_name: String!
+  price: Float!
+  description: String!
+  filename: String!
+  category: Category!
+  owner: User!
+  location: Location!
+}
+
+type Location {
+  type: String!
+  coordinates: [Float!]
+}
+
+type MerchandiseResponse {
+  merchandise: Merchandise
+  message: String!
+}
+
+input Coordinates {
+  lat: Float!
+  lng: Float
+}
+
+input LocationInput {
+  type: String!
+  coordinates: [Float]!
+}
+
+type Query {
+  merchandises: [Merchandise]
+  merchandise(id: ID!): Merchandise
+  merchandisesByCategory(categoryId: ID!): [Merchandise]
+  merchandisesByOwner(ownerId: ID!): [Merchandise]
+  merchandisesByArea(topRight: Coordinates!, bottomLeft: Coordinates!): [Merchandise]
+}
+
+input MerchandiseInput {
+  merchandise_name: String!
+  price: Float!
+  description: String!
+  filename: String!
+  category: ID!
+  location: LocationInput!
+}
+
+input MerchandiseModify {
+  merchandise_name: String
+  price: Float
+  description: String
+  category: ID
+  location: LocationInput
+}
+
+type Mutation {
+  addMerchandise(merchandise: MerchandiseInput!): MerchandiseResponse
+  modifyMerchandise(id: ID!, input: MerchandiseModify!): MerchandiseResponse
+  deleteMerchandise(id: ID!): MerchandiseResponse
+}

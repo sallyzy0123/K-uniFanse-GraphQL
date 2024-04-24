@@ -9,10 +9,11 @@ type Category = {
 type Merchandise = Partial<Document> & {
   merchandise_name: string;
   category: mongoose.Types.ObjectId;
-  image: string;
+  filename: string;
   location: Point;
   price: number;
   description: string;
+  owner: mongoose.Types.ObjectId;
 }
 
 // type Species = Partial<Document> & {

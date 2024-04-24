@@ -1,11 +1,23 @@
 import {GraphQLError} from 'graphql';
-import {User, UserOutput} from '../../types/DBTypes';
+import {Merchandise, User, UserOutput} from '../../types/DBTypes';
 import {MessageResponse} from '../../types/MessageTypes';
 import {MyContext} from '../../types/MyContext';
 import fetchData from '../../lib/fetchData';
 import {UserResponse} from '../../types/MessageTypes';
 
 export default {
+  Merchandise: {
+    owner: async (parent: Merchandise): Promise<User> => {
+      if (!process.env.AUTH_URL) {
+        throw new GraphQLError('Auth URL not set in .env file');
+      }
+      const user = await fetchData<User>(
+        process.env.AUTH_URL + '/users/' + parent.owner,
+      );
+      user.id = user._id;
+      return user;
+    },
+  },
   Query: {
     users: async (): Promise<UserOutput[]> => {
       if (!process.env.AUTH_URL) {

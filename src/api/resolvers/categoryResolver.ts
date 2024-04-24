@@ -1,22 +1,22 @@
 import {GraphQLError} from 'graphql';
-import {Category} from '../../types/DBTypes';
+import {Category, Merchandise} from '../../types/DBTypes';
 import categoryModel from '../models/categoryModel';
 import {MyContext} from '../../types/MyContext';
 
 export default {
-  // Species: {
-  //   category: async (parent: Species): Promise<Category> => {
-  //     const category = await categoryModel.findById(parent.category);
-  //     if (!category) {
-  //       throw new GraphQLError('Category not found', {
-  //         extensions: {
-  //           code: 'NOT_FOUND',
-  //         },
-  //       });
-  //     }
-  //     return category;
-  //   },
-  // },
+  Merchandise: {
+    category: async (parent: Merchandise): Promise<Category> => {
+      const category = await categoryModel.findById(parent.category);
+      if (!category) {
+        throw new GraphQLError('Category not found', {
+          extensions: {
+            code: 'NOT_FOUND',
+          },
+        });
+      }
+      return category;
+    },
+  },
   Query: {
     categories: async (): Promise<Category[]> => {
       return await categoryModel.find();
@@ -64,7 +64,6 @@ export default {
       args: {id: string},
       context: MyContext,
     ): Promise<{message: string; category?: Category}> => {
-      console.log('context', context.userdata);
       if (!context.userdata || context.userdata.user.role !== 'admin') {
         throw new GraphQLError('User not authorized', {
           extensions: {

@@ -1,14 +1,10 @@
-// import animalResolver from './animalResolver';
-// import speciesResolver from './speciesResolver';
-// import categoryResolver from './categoryResolver';
-
 import categoryResolver from './categoryResolver';
+import merchandiseResolver from './merchandiseResolver';
 import userResolver from './userResolver';
 
 
 export default [
-  // animalResolver,
-  // speciesResolver,
+  merchandiseResolver,
   categoryResolver,
   userResolver,
 ];
