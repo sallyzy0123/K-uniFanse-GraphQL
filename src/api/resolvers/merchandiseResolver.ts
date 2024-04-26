@@ -5,8 +5,19 @@ import {MyContext} from '../../types/MyContext';
 
 export default {
   Query: {
-    merchandises: async () => {},
-    merchandise: async ()=> {},
+    merchandises: async (): Promise<Merchandise[]> => {
+      return await merchandiseModel.find();
+    },
+    merchandise: async (
+      _parent: undefined,
+      args: {id: string},
+    )=> {
+      const merchandise = await merchandiseModel.findById(args.id);
+      if (!merchandise) {
+        throw new Error('Category not found');
+      }
+      return merchandise;
+    },
     merchandisesByCategory: async () => {},
     merchandisesByOwner: async () => {},
     merchandisesByArea: async () => {},
