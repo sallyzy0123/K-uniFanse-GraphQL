@@ -1,4 +1,3 @@
-import {Point} from 'geojson';
 import mongoose, {Document} from 'mongoose';
 
 type Category = {
@@ -10,28 +9,10 @@ type Merchandise = Partial<Document> & {
   merchandise_name: string;
   category: mongoose.Types.ObjectId;
   filename: string;
-  location: Point;
   price: number;
   description: string;
   owner: mongoose.Types.ObjectId;
 }
-
-// type Species = Partial<Document> & {
-//   species_name: string;
-//   category: mongoose.Types.ObjectId;
-//   image: string;
-//   location: Point;
-// };
-
-// type Animal = Partial<Document> & {
-//   animal_name: string;
-//   species: mongoose.Types.ObjectId;
-//   birthdate: Date;
-//   gender: 'male' | 'female';
-//   owner: mongoose.Types.ObjectId;
-//   image: string;
-//   location: Point;
-// };
 
 type User = Partial<Document> & {
   id: mongoose.Types.ObjectId;
@@ -60,13 +41,10 @@ type TokenContent = {
 export {
   Category,
   Merchandise,
-  // Animal,
   User,
   UserOutput,
   UserInput,
   UserTest,
   LoginUser,
-  // UserWithoutPassword,
-  // UserWithoutPasswordRole,
   TokenContent,
 };

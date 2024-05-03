@@ -6,12 +6,6 @@ type Merchandise {
   filename: String!
   category: Category!
   owner: User!
-  location: Location!
-}
-
-type Location {
-  type: String!
-  coordinates: [Float!]
 }
 
 type MerchandiseResponse {
@@ -19,22 +13,11 @@ type MerchandiseResponse {
   message: String!
 }
 
-input Coordinates {
-  lat: Float!
-  lng: Float
-}
-
-input LocationInput {
-  type: String!
-  coordinates: [Float]!
-}
-
 type Query {
   merchandises: [Merchandise]
   merchandise(id: ID!): Merchandise
   merchandisesByCategory(categoryId: ID!): [Merchandise]
   merchandisesByOwner(ownerId: ID!): [Merchandise]
-  merchandisesByArea(topRight: Coordinates!, bottomLeft: Coordinates!): [Merchandise]
 }
 
 input MerchandiseInput {
@@ -43,7 +26,6 @@ input MerchandiseInput {
   description: String!
   filename: String!
   category: ID!
-  location: LocationInput!
 }
 
 input MerchandiseModify {
@@ -51,7 +33,6 @@ input MerchandiseModify {
   price: Float
   description: String
   category: ID
-  location: LocationInput
 }
 
 type Mutation {

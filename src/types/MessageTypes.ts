@@ -1,4 +1,3 @@
-import {Point} from 'geojson';
 import {UserOutput} from './DBTypes';
 
 type MessageResponse = {
@@ -21,7 +20,6 @@ type LoginResponse = MessageResponse & {
 type UploadResponse = MessageResponse & {
   data: {
     filename: string;
-    location: Point;
   };
 };
 

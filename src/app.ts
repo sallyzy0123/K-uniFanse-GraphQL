@@ -40,13 +40,12 @@ const app = express();
     const permissions = shield({
       Mutation: {
         login: rateLimitRule({window: '10s', max: 5}),
-        // addAnimal: rateLimitRule({window: '10s', max: 1}),
-      }
-    })
+      },
+    }, {allowExternalErrors: true})
 
-    app.get('/', (_req: Request, res: Response<MessageResponse>) => {
-      res.send({message: 'Server is running'});
-    });
+    // app.get('/', (_req: Request, res: Response<MessageResponse>) => {
+    //   res.send({message: 'Server is running'});
+    // });
 
     const executableSchema = makeExecutableSchema({
       typeDefs: [constraintDirectiveTypeDefs, typeDefs],

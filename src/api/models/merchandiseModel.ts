@@ -16,17 +16,6 @@ const merchandiseSchema = new mongoose.Schema<Merchandise>({
     type: String,
     required: [true, 'Image is required.'],
   },
-  location: {
-    type: {
-      type: String,
-      enum: ['Point'],
-      required: true,
-    },
-    coordinates: {
-      type: [Number],
-      required: true,
-    },
-  },
   price: {
     type: Number,
     required: [true, 'Price is required.'],

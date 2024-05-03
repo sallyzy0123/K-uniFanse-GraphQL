@@ -144,7 +144,6 @@ export default {
           Authorization: 'Bearer ' + context.userdata.token,
         },
       };
-      console.log('here')
       const userResponse = await fetchData<UserResponse>(
         process.env.AUTH_URL + '/users',
         options,

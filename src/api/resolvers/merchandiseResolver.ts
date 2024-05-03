@@ -2,6 +2,17 @@ import {GraphQLError} from 'graphql';
 import {Merchandise} from '../../types/DBTypes';
 import merchandiseModel from '../models/merchandiseModel';
 import {MyContext} from '../../types/MyContext';
+// import {io, Socket} from 'socket.io-client';
+// import {ClientToServerEvents, ServerToClientEvents} from '../../types/Socket';
+
+// if (!process.env.SOCKET_URL) {
+//   throw new Error('SOCKET_URL not defined');
+// }
+
+// // socket io client
+// const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io(
+//   process.env.SOCKET_URL,
+// );
 
 export default {
   Query: {
@@ -14,13 +25,12 @@ export default {
     )=> {
       const merchandise = await merchandiseModel.findById(args.id);
       if (!merchandise) {
-        throw new Error('Category not found');
+        throw new Error('Merchandise not found');
       }
       return merchandise;
     },
     merchandisesByCategory: async () => {},
     merchandisesByOwner: async () => {},
-    merchandisesByArea: async () => {},
   },
   Mutation: {
     addMerchandise: async (
@@ -28,7 +38,6 @@ export default {
       args: {merchandise: Merchandise},
       context: MyContext,
     ): Promise<{message: string; merchandise?: Merchandise}> => {
-      console.log('here1', context.userdata);
       if (!context.userdata) {
         throw new GraphQLError('User not authenticated', {
           extensions: {
@@ -41,7 +50,6 @@ export default {
         ...args.merchandise,
         owner: context.userdata.user._id,
       }
-      console.log('here', args.merchandise);
 
       const merchandise = await merchandiseModel.create(args.merchandise);
       if (merchandise) {
