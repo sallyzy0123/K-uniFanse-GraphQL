@@ -58,7 +58,31 @@ export default {
         return {message: 'Merchandise not created.'}
       }
     },
-    modifyMerchandise: async () => {},
+    modifyMerchandise: async (
+      _parent: undefined,
+      args: {
+        id: string;
+        input: Pick<Merchandise, 'merchandise_name' | 'price' | 'description' | 'category'>},
+      context: MyContext,
+    ) => {
+      if (!context.userdata) {
+        throw new GraphQLError('User not authenticated', {
+          extensions: {
+            code: 'UNAUTHENTICATED',
+          },
+        });
+      }
+      const merchandise = await merchandiseModel.findByIdAndUpdate(
+        args.id,
+        args.input,
+        {new: true},
+      );
+      if (merchandise) {
+        return {message: 'Merchandise updated', merchandise};
+      } else {
+        return {message: 'Merchandise not updated'};
+      }
+    },
     deleteMerchandise: async () => {},
   },
 };

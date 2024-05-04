@@ -29,10 +29,6 @@ type UserTest = Partial<User>;
 
 type LoginUser = Omit<User, 'password'>;
 
-// type UserWithoutPassword = Omit<User, 'password'>;
-
-// type UserWithoutPasswordRole = Omit<UserWithoutPassword, 'role'>;
-
 type TokenContent = {
   token: string;
   user: LoginUser;
