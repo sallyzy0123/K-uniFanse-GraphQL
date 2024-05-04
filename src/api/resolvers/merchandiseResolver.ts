@@ -83,6 +83,24 @@ export default {
         return {message: 'Merchandise not updated'};
       }
     },
-    deleteMerchandise: async () => {},
+    deleteMerchandise: async (
+      _parent: undefined,
+      args: {id: string},
+      context: MyContext,
+    ) => {
+      if (!context.userdata) {
+        throw new GraphQLError('User not authenticated', {
+          extensions: {
+            code: 'UNAUTHENTICATED',
+          },
+        });
+      }
+      const merchandise = await merchandiseModel.findByIdAndDelete(args.id);
+      if (merchandise) {
+        return {message: 'Merchandise deleted', merchandise};
+      } else {
+        return {message: 'Merchandise not deleted'};
+      }
+    },
   },
 };
