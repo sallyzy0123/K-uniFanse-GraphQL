@@ -1,10 +1,11 @@
 type ServerToClientEvents = {
-  // addMerchandise: (message: string) => void;
-  // addSpecies: (message: string) => void;
+  addMerchandise: (message: string) => void;
+  modifyMerchandise: (message: string) => void;
+  deleteMerchandise: (message: string) => void;
 }
 
 type ClientToServerEvents = {
-  // update: (msg: string) => void;
+  update: (message: string) => void;
 }
 
-export {ServerToClientEvents, ClientToServerEvents};
+export type {ServerToClientEvents, ClientToServerEvents};

@@ -2,17 +2,17 @@ import {GraphQLError} from 'graphql';
 import {Merchandise} from '../../types/DBTypes';
 import merchandiseModel from '../models/merchandiseModel';
 import {MyContext} from '../../types/MyContext';
-// import {io, Socket} from 'socket.io-client';
-// import {ClientToServerEvents, ServerToClientEvents} from '../../types/Socket';
+import {io, Socket} from 'socket.io-client';
+import {ClientToServerEvents, ServerToClientEvents} from '../../types/Socket';
 
-// if (!process.env.SOCKET_URL) {
-//   throw new Error('SOCKET_URL not defined');
-// }
+if (!process.env.SOCKET_URL) {
+  throw new Error('SOCKET_URL not defined');
+}
 
-// // socket io client
-// const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io(
-//   process.env.SOCKET_URL,
-// );
+// socket io client
+const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io(
+  process.env.SOCKET_URL as string,
+);
 
 export default {
   Query: {
@@ -53,6 +53,7 @@ export default {
 
       const merchandise = await merchandiseModel.create(args.merchandise);
       if (merchandise) {
+        socket.emit('update', 'addMerchandise');
         return {merchandise, message: 'Merchandise created.'};
       } else {
         return {message: 'Merchandise not created.'}
@@ -80,6 +81,7 @@ export default {
         {new: true},
       );
       if (merchandise) {
+        socket.emit('update', 'modifyMerchandise');
         return {message: 'Merchandise updated', merchandise};
       } else {
         return {message: 'Merchandise not updated'};
@@ -100,6 +102,7 @@ export default {
       const filter = {_id: args.id, owner: context.userdata.user._id};
       const merchandise = await merchandiseModel.findByIdAndDelete(filter);
       if (merchandise) {
+        socket.emit('update', 'deleteMerchandise');
         return {message: 'Merchandise deleted', merchandise};
       } else {
         return {message: 'Merchandise not deleted'};
