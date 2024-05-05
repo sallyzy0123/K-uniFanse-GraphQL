@@ -72,8 +72,10 @@ export default {
           },
         });
       }
+      // console.log(context.userdata);
+      const filter = {_id: args.id, owner: context.userdata.user._id};
       const merchandise = await merchandiseModel.findByIdAndUpdate(
-        args.id,
+        filter,
         args.input,
         {new: true},
       );
@@ -95,7 +97,8 @@ export default {
           },
         });
       }
-      const merchandise = await merchandiseModel.findByIdAndDelete(args.id);
+      const filter = {_id: args.id, owner: context.userdata.user._id};
+      const merchandise = await merchandiseModel.findByIdAndDelete(filter);
       if (merchandise) {
         return {message: 'Merchandise deleted', merchandise};
       } else {
