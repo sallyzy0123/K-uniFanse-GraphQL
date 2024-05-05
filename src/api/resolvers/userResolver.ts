@@ -46,9 +46,14 @@ export default {
       _args: undefined,
       context: MyContext,
     ) => {
+      if (context.userdata) {
+        context.userdata.user.id = context.userdata?.user._id;
+      }
+
       const response = {
         message: 'Token is valid',
-        user: context.userdata,
+        token: context.userdata?.token,
+        user: context.userdata?.user,
       };
       return response;
     },
