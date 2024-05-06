@@ -30,7 +30,25 @@ export default {
       return merchandise;
     },
     merchandisesByCategory: async () => {},
-    merchandisesByOwner: async () => {},
+    merchandisesByOwner: async (
+      _parent: undefined,
+      _args: undefined,
+      context: MyContext,
+    ) => {
+      if (!context.userdata) {
+        throw new GraphQLError('User not authenticated', {
+          extensions: {
+            code: 'UNAUTHENTICATED',
+          },
+        });
+      }
+      // console.log(context.userdata);
+      const merchandises = await merchandiseModel.find({owner: context.userdata.user._id});
+      if (!merchandises) {
+        throw new Error('Merchandise not found');
+      }
+      return merchandises;
+    },
   },
   Mutation: {
     addMerchandise: async (

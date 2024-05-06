@@ -17,7 +17,7 @@ type Query {
   merchandises: [Merchandise]
   merchandise(id: ID!): Merchandise
   merchandisesByCategory(categoryId: ID!): [Merchandise]
-  merchandisesByOwner(ownerId: ID!): [Merchandise]
+  merchandisesByOwner: [Merchandise]
 }
 
 input MerchandiseInput {
