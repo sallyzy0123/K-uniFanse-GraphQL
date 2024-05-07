@@ -1,7 +1,7 @@
 import mongoose, {Document} from 'mongoose';
 
 type Category = {
-  _id: mongoose.Types.ObjectId;
+  id: mongoose.Types.ObjectId;
   category_name: string;
 };
 
@@ -27,6 +27,10 @@ type UserInput = Omit<User, 'id' | 'role'>;
 
 type UserTest = Partial<User>;
 
+type MerchandiseTest = Partial<Merchandise>;
+
+type CategoryTest = Partial<Category>;
+
 type LoginUser = Omit<User, 'password'>;
 
 type TokenContent = {
@@ -41,6 +45,8 @@ export {
   UserOutput,
   UserInput,
   UserTest,
+  MerchandiseTest,
+  CategoryTest,
   LoginUser,
   TokenContent,
 };

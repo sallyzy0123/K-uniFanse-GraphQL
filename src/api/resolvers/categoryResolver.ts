@@ -35,7 +35,7 @@ export default {
   Mutation: {
     addCategory: async (
       _parent: undefined,
-      args: {category: Omit<Category, '_id'>},
+      args: {category: Omit<Category, 'id'>},
     ): Promise<{message: string; category?: Category}> => {
       const category = await categoryModel.create(args.category);
       if (category) {
@@ -46,7 +46,7 @@ export default {
     },
     // modifyCategory: async (
     //   _parent: undefined,
-    //   args: {category: Omit<Category, '_id'>; id: string},
+    //   args: {category: Omit<Category, 'id'>; id: string},
     // ): Promise<{message: string; category?: Category}> => {
     //   const category = await categoryModel.findByIdAndUpdate(
     //     args.id,
@@ -64,7 +64,7 @@ export default {
       args: {id: string},
       context: MyContext,
     ): Promise<{message: string; category?: Category}> => {
-      if (!context.userdata || context.userdata.user.role !== 'admin') {
+      if (!context.userdata) {
         throw new GraphQLError('User not authorized', {
           extensions: {
             code: 'UNAUTHORIZED',
@@ -74,7 +74,7 @@ export default {
       // delete species and animals that belong to this category
       // const allSpecies = await speciesModel.find({category: args.id});
       // for (const species of allSpecies) {
-      //   await animalModel.deleteMany({species: species._id});
+      //   await animalModel.deleteMany({species: species.id});
       // }
 
       // await speciesModel.deleteMany({category: args.id});
