@@ -7,7 +7,7 @@ type Category = {
 
 type Merchandise = Partial<Document> & {
   merchandise_name: string;
-  category: mongoose.Types.ObjectId;
+  category: mongoose.Types.ObjectId | string;
   filename: string;
   price: number;
   description: string;

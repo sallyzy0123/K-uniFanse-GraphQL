@@ -1,4 +1,4 @@
-import {UserOutput} from './DBTypes';
+import {Merchandise, UserOutput} from './DBTypes';
 
 type MessageResponse = {
   message: string;
@@ -23,10 +23,15 @@ type UploadResponse = MessageResponse & {
   };
 };
 
+type MerchandiseResponse = MessageResponse & {
+  merchandise: Merchandise;
+}
+
 export {
   MessageResponse,
   ErrorResponse,
   UserResponse,
   LoginResponse,
   UploadResponse,
+  MerchandiseResponse,
 };
