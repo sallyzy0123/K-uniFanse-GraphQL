@@ -11,14 +11,14 @@ import resolvers from './api/resolvers/index';
 import {MyContext} from './types/MyContext';
 import {makeExecutableSchema} from '@graphql-tools/schema';
 import {
-  constraintDirectiveTypeDefs,
-  createApollo4QueryValidationPlugin,
-} from 'graphql-constraint-directive/apollo4';
+  ApolloServerPluginLandingPageLocalDefault,
+  ApolloServerPluginLandingPageProductionDefault,
+} from '@apollo/server/plugin/landingPage/default';
 import { createRateLimitRule } from 'graphql-rate-limit';
 import {applyMiddleware} from 'graphql-middleware';
 import {shield} from 'graphql-shield';
 import authenticate from './lib/authenticate';
-import { ApolloServerPluginLandingPageGraphQLPlayground } from 'apollo-server-core';
+import {constraintDirectiveTypeDefs} from 'graphql-constraint-directive';
 
 const app = express();
 
@@ -57,15 +57,18 @@ const app = express();
 
     const schema = applyMiddleware(executableSchema, permissions);
 
-    const plugins = [
-      createApollo4QueryValidationPlugin()
-    ];
-
     const server = new ApolloServer<MyContext>({
       schema,
-      plugins,
+      introspection: true,
+      plugins: [
+        process.env.NODE_ENV === 'production'
+          ? ApolloServerPluginLandingPageProductionDefault({
+              embed: true as false,
+            })
+          : ApolloServerPluginLandingPageLocalDefault(),
+      ],
+      includeStacktraceInErrorResponses: false,
     });
-
     await server.start();
 
     app.use(
