@@ -44,21 +44,6 @@ export default {
         return {message: 'Category not added'};
       }
     },
-    // modifyCategory: async (
-    //   _parent: undefined,
-    //   args: {category: Omit<Category, 'id'>; id: string},
-    // ): Promise<{message: string; category?: Category}> => {
-    //   const category = await categoryModel.findByIdAndUpdate(
-    //     args.id,
-    //     args.category,
-    //     {new: true},
-    //   );
-    //   if (category) {
-    //     return {message: 'Category updated', category};
-    //   } else {
-    //     return {message: 'Category not updated'};
-    //   }
-    // },
     deleteCategory: async (
       _parent: undefined,
       args: {id: string},

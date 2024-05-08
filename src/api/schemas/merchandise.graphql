@@ -16,7 +16,6 @@ type MerchandiseResponse {
 type Query {
   merchandises: [Merchandise]
   merchandise(id: ID!): Merchandise
-  merchandisesByCategory(categoryId: ID!): [Merchandise]
   merchandisesByOwner: [Merchandise]
 }
 

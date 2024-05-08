@@ -22,19 +22,18 @@ export default {
     merchandise: async (
       _parent: undefined,
       args: {id: string},
-    )=> {
+    ): Promise<Merchandise> => {
       const merchandise = await merchandiseModel.findById(args.id);
       if (!merchandise) {
         throw new Error('Merchandise not found');
       }
       return merchandise;
     },
-    merchandisesByCategory: async () => {},
     merchandisesByOwner: async (
       _parent: undefined,
       _args: undefined,
       context: MyContext,
-    ) => {
+    ): Promise<Merchandise[]> => {
       if (!context.userdata) {
         throw new GraphQLError('User not authenticated', {
           extensions: {

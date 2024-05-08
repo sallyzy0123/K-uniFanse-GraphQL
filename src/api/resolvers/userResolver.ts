@@ -1,6 +1,6 @@
 import {GraphQLError} from 'graphql';
 import {Merchandise, User, UserOutput} from '../../types/DBTypes';
-import {MessageResponse} from '../../types/MessageTypes';
+import {LoginResponse, MessageResponse} from '../../types/MessageTypes';
 import {MyContext} from '../../types/MyContext';
 import fetchData from '../../lib/fetchData';
 import {UserResponse} from '../../types/MessageTypes';
@@ -19,7 +19,7 @@ export default {
     },
   },
   Query: {
-    users: async (): Promise<UserOutput[]> => {
+    users: async (): Promise<User[]> => {
       if (!process.env.AUTH_URL) {
         throw new GraphQLError('Auth URL not set in .env file');
       }
@@ -31,7 +31,7 @@ export default {
     },
     user: async (
       _parent: undefined, args: {id: string}
-    ): Promise<UserOutput> => {
+    ): Promise<User> => {
       if (!process.env.AUTH_URL) {
         throw new GraphQLError('Auth URL not set in .env file');
       }
@@ -156,51 +156,5 @@ export default {
       userResponse.user.id = userResponse.user._id;
       return userResponse;
     },
-//   updateUserAsAdmin: async (
-//       _parent: undefined,
-//       args: {user: UserInput, id: string},
-//       context: MyContext,
-//   ): Promise<UserResponse | {message: string}> => {
-//       if (!context.userdata || context.userdata.user.role !== 'admin') {
-//           throw new GraphQLError('User not authorized', {
-//             extensions: {
-//               code: 'UNAUTHORIZED',
-//             },
-//           });
-//       }
-//       const user = await userModel.findByIdAndUpdate(
-//           args.id,
-//           args.user,
-//           {
-//               new: true,
-//           }
-//       );
-//       if (user) {
-//           return {message: 'User updated by admin', user};
-//       } else {
-//           return {message: 'User not updated by admin'};
-//       }
-//   },
-//   deleteUserAsAdmin: async (
-//       _parent: undefined,
-//       args: {id: string},
-//       context: MyContext,
-//   ): Promise<UserResponse | {message: string}> => {
-//       console.log('context', context.userdata);
-//       if (!context.userdata || context.userdata.user.role !== 'admin') {
-//           throw new GraphQLError('User not authorized', {
-//             extensions: {
-//               code: 'UNAUTHORIZED',
-//             },
-//           });
-//       }
-//       const user = await userModel.findByIdAndDelete(args.id);
-//       if (user) {
-//           return {message: 'User deleted by admin', user};
-//       } else {
-//           return {message: 'User not deleted by admin'};
-//       }
-//   },
-// },
   },
 };

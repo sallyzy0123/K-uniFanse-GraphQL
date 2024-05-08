@@ -23,6 +23,5 @@ type CategoryMessage {
 
 type Mutation {
   addCategory(category: CategoryInput!): CategoryMessage
-  # modifyCategory(category: CategoryModifyInput!, id: ID!): CategoryMessage
   deleteCategory(id: ID!): CategoryMessage
 }

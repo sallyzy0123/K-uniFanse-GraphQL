@@ -12,7 +12,7 @@ type UserResponse {
 type Query {
   users: [User]
   user(id: ID!): User
-  checkToken: UserResponse
+  checkToken: LoginResponse
 }
 
 input UserInput {
@@ -41,6 +41,4 @@ type Mutation {
   login(credentials: Credentials!): LoginResponse
   updateUser(user: UserModifyInput!): UserResponse
   deleteUser: UserResponse
-  updateUserAsAdmin(user: UserModifyInput!, id: ID!): UserResponse
-  deleteUserAsAdmin(id: ID!): UserResponse
 }
