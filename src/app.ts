@@ -21,15 +21,20 @@ import authenticate from './lib/authenticate';
 import {constraintDirectiveTypeDefs} from 'graphql-constraint-directive';
 
 const app = express();
+console.log('start the app');
 
 (async () => {
+  console.log('start the async inside');
   try {
+    console.log('before helmet');
     app.use(
       helmet({
         crossOriginEmbedderPolicy: false,
         contentSecurityPolicy: false,
       }),
     );
+
+    console.log('after helmet before ratelimitrule');
 
     const rateLimitRule = createRateLimitRule({
       identifyContext: (ctx) => {
@@ -38,11 +43,15 @@ const app = express();
       },
     });
 
+    console.log('after rateLimitRule before permissions');
+
     const permissions = shield({
       Mutation: {
         login: rateLimitRule({window: '10s', max: 5}),
       },
     }, {allowExternalErrors: true})
+
+    console.log('after permissions before app.get');
 
     app.get('/', (_req: Request, res: Response<MessageResponse>) => {
       res.json({
@@ -50,12 +59,18 @@ const app = express();
       });
     });
 
+    console.log('after app.get before executableSchema');
+
     const executableSchema = makeExecutableSchema({
       typeDefs: [constraintDirectiveTypeDefs, typeDefs],
       resolvers,
     });
 
+    console.log('after executableSchema before schema');
+
     const schema = applyMiddleware(executableSchema, permissions);
+
+    console.log('after schema before server');
 
     const server = new ApolloServer<MyContext>({
       schema,
@@ -69,7 +84,12 @@ const app = express();
       ],
       includeStacktraceInErrorResponses: false,
     });
+
+    console.log('after server before server.start');
+
     await server.start();
+
+    console.log('after server.start before graphql use');
 
     app.use(
       '/graphql',
@@ -80,11 +100,18 @@ const app = express();
       }),
     );
 
+    console.log('after graphql use before notfound errorhandler');
+
     app.use(notFound);
     app.use(errorHandler);
+
+    console.log('after notfound errorhandler');
+
   } catch (error) {
     console.error((error as Error).message);
   }
 })();
+
+console.log('after app async function');
 
 export default app;
