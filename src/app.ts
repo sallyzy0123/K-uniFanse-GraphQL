@@ -58,12 +58,12 @@ const app = express();
     const schema = applyMiddleware(executableSchema, permissions);
 
     const plugins = [
-      createApollo4QueryValidationPlugin(), ApolloServerPluginLandingPageGraphQLPlayground(),];
+      createApollo4QueryValidationPlugin()
+    ];
 
     const server = new ApolloServer<MyContext>({
       schema,
       plugins,
-      introspection: true,
     });
 
     await server.start();
