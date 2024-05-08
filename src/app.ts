@@ -43,9 +43,11 @@ const app = express();
       },
     }, {allowExternalErrors: true})
 
-    // app.get('/', (_req: Request, res: Response<MessageResponse>) => {
-    //   res.send({message: 'Server is running'});
-    // });
+    app.get('/', (_req: Request, res: Response<MessageResponse>) => {
+      res.json({
+        message: 'API location: graphql',
+      });
+    });
 
     const executableSchema = makeExecutableSchema({
       typeDefs: [constraintDirectiveTypeDefs, typeDefs],
