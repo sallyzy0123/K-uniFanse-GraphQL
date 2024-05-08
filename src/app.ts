@@ -21,19 +21,19 @@ import authenticate from './lib/authenticate';
 import {constraintDirectiveTypeDefs} from 'graphql-constraint-directive';
 
 const app = express();
+
+app.use(
+  helmet({
+    crossOriginEmbedderPolicy: false,
+    contentSecurityPolicy: false,
+  }),
+);
+
 console.log('start the app');
 
 (async () => {
   console.log('start the async inside');
   try {
-    console.log('before helmet');
-    app.use(
-      helmet({
-        crossOriginEmbedderPolicy: false,
-        contentSecurityPolicy: false,
-      }),
-    );
-
     console.log('after helmet before ratelimitrule');
 
     const rateLimitRule = createRateLimitRule({
@@ -51,15 +51,7 @@ console.log('start the app');
       },
     }, {allowExternalErrors: true})
 
-    console.log('after permissions before app.get');
-
-    app.get('/', (_req: Request, res: Response<MessageResponse>) => {
-      res.json({
-        message: 'API location: graphql',
-      });
-    });
-
-    console.log('after app.get before executableSchema');
+    console.log('after permissions before executableSchema');
 
     const executableSchema = makeExecutableSchema({
       typeDefs: [constraintDirectiveTypeDefs, typeDefs],
@@ -89,11 +81,17 @@ console.log('start the app');
 
     await server.start();
 
-    console.log('after server.start before graphql use');
+    console.log('after server.start before get use');
+
+    app.get('/', (_req: Request, res: Response<MessageResponse>) => {
+      res.json({
+        message: 'API location: graphql',
+      });
+    });
 
     app.use(
       '/graphql',
-      cors(),
+      cors<cors.CorsRequest>(),
       express.json(),
       expressMiddleware(server, {
         context: async ({req}) => authenticate(req),
