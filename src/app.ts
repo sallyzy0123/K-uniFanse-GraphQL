@@ -18,6 +18,7 @@ import { createRateLimitRule } from 'graphql-rate-limit';
 import {applyMiddleware} from 'graphql-middleware';
 import {shield} from 'graphql-shield';
 import authenticate from './lib/authenticate';
+import { ApolloServerPluginLandingPageGraphQLPlayground } from 'apollo-server-core';
 
 const app = express();
 
@@ -56,11 +57,13 @@ const app = express();
 
     const schema = applyMiddleware(executableSchema, permissions);
 
-    const plugins = [createApollo4QueryValidationPlugin()];
+    const plugins = [
+      createApollo4QueryValidationPlugin(), ApolloServerPluginLandingPageGraphQLPlayground(),];
 
     const server = new ApolloServer<MyContext>({
       schema,
       plugins,
+      introspection: true,
     });
 
     await server.start();
