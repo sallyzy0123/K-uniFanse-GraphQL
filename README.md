@@ -42,6 +42,7 @@ K-pop fans in Finland
 1. Browse other merchandise
 1. Choose the merchandise that you posted
 1. Edit your merchandise
+1. Navigate to the profile page
 1. Delete your merchandise
 1. Navigate to the profile page
 1. Logout
