@@ -14,6 +14,7 @@ K-pop fans in Finland
 - user authentication
 - users can add, modify, and delete their idol merchandise
 - users can edit their info and delete their account
+- category management by admin
 
 ## Implementation
 - Frontend: React, Bootstrap -> [React](https://github.com/sallyzy0123/K-uniFanse-Vite)
