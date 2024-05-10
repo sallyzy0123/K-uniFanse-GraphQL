@@ -4,6 +4,7 @@ import {LoginResponse, MessageResponse} from '../../types/MessageTypes';
 import {MyContext} from '../../types/MyContext';
 import fetchData from '../../lib/fetchData';
 import {UserResponse} from '../../types/MessageTypes';
+import merchandiseModel from '../models/merchandiseModel';
 
 export default {
   Merchandise: {
@@ -135,7 +136,7 @@ export default {
       _parent: undefined,
       _args: undefined,
       context: MyContext,
-  ): Promise<UserResponse> => {
+  ) => {
       if (!context.userdata) {
           throw new GraphQLError('User not authenticated', {
             extensions: {
@@ -143,12 +144,18 @@ export default {
             },
           });
       }
+
+      // delete the merchandise of the user
+      const merchandiseFilter = { owner: context.userdata.user._id};
+      await merchandiseModel.deleteMany(merchandiseFilter);
+
       const options = {
         method: 'DELETE',
         headers: {
           Authorization: 'Bearer ' + context.userdata.token,
         },
       };
+
       const userResponse = await fetchData<UserResponse>(
         process.env.AUTH_URL + '/users',
         options,

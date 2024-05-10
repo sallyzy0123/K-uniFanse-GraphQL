@@ -29,13 +29,8 @@ app.use(
   }),
 );
 
-console.log('start the app');
-
 (async () => {
-  console.log('start the async inside');
   try {
-    console.log('after helmet before ratelimitrule');
-
     const rateLimitRule = createRateLimitRule({
       identifyContext: (ctx) => {
         // console.log(ctx);
@@ -43,26 +38,18 @@ console.log('start the app');
       },
     });
 
-    console.log('after rateLimitRule before permissions');
-
     const permissions = shield({
       Mutation: {
         login: rateLimitRule({window: '10s', max: 5}),
       },
     }, {allowExternalErrors: true})
 
-    console.log('after permissions before executableSchema');
-
     const executableSchema = makeExecutableSchema({
       typeDefs: [constraintDirectiveTypeDefs, typeDefs],
       resolvers,
     });
 
-    console.log('after executableSchema before schema');
-
     const schema = applyMiddleware(executableSchema, permissions);
-
-    console.log('after schema before server');
 
     const server = new ApolloServer<MyContext>({
       schema,
@@ -77,11 +64,7 @@ console.log('start the app');
       includeStacktraceInErrorResponses: false,
     });
 
-    console.log('after server before server.start');
-
     await server.start();
-
-    console.log('after server.start before get use');
 
     app.get('/', (_req: Request, res: Response<MessageResponse>) => {
       res.json({
@@ -98,18 +81,12 @@ console.log('start the app');
       }),
     );
 
-    console.log('after graphql use before notfound errorhandler');
-
     app.use(notFound);
     app.use(errorHandler);
-
-    console.log('after notfound errorhandler');
 
   } catch (error) {
     console.error((error as Error).message);
   }
 })();
-
-console.log('after app async function');
 
 export default app;
